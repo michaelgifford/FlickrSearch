@@ -47,9 +47,6 @@ var SearchComponent = React.createClass({
   mixins: [TimerMixin],
   timeoutID: (null: any),
 
-
-
-
   getInitialState: function() { // get state of app
     return {
       loadingNow: false,
@@ -211,20 +208,16 @@ var SearchComponent = React.createClass({
 
       <View style={styles.viewContainer}>
         <SearchBox
-        ref="searchbox"
+          ref="searchbox"
           alterSearch={this.alterSearch}
           loadingNow={this.state.loadingNow}
           onFocus={() =>
-            this.refs.listview && this.refs.listview.getScrollResponder().scrollTo({ x: 0, y: 0 })}/>
-           
-            <View style={styles.gridSeparator} />
-            {content}
-                
-                <DropDownSelect ref="ddselect"/>
-
-
+            this.refs.listview && this.refs.listview.getScrollResponder().scrollTo({ x: 0, y: 0 })}/> 
         <View style={styles.gridSeparator} />
- 
+        {content}
+        <DropDownSelect 
+          ref="ddselect"/>
+        <View style={styles.gridSeparator} />
       </View>
     );
   },

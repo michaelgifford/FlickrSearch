@@ -21,13 +21,11 @@ var {
   StyleSheet,
 } = React;
 
-var sortType;
-
 
 var DropDownSelect = React.createClass({
   getInitialState: function(props) {
     this.state = {
-      canada: ''
+      selectedStyle: ''
     };
     return (this.state);
   },
@@ -41,16 +39,15 @@ var DropDownSelect = React.createClass({
     return this.refs['OPTIONLIST'];
   },
 
-  _canada: function(province: string) {
-
+  _canada: function(sortStyle: string) {
     this.setState({
       ...this.state,
-      canada: province
+      selectedStyle: sortStyle
     });
   },
 
   getSelectedState: function() {
-    return (this.state.canada);
+    return (this.state.selectedStyle);
   },
 
   render: function() {
@@ -62,7 +59,8 @@ var DropDownSelect = React.createClass({
             ref="SELECT1"
             optionListRef={this._getOptionList}
             defaultValue="Date Posted - Descending"
-            onSelect={this._canada}>
+            onSelect={this._canada}
+            >
             <Option style={styles.dropdownOption}>Date Posted - Ascending</Option>
             <Option style={styles.dropdownOption}>Date Posted - Descending</Option>
             <Option style={styles.dropdownOption}>Date Taken - Ascending</Option>
@@ -71,8 +69,6 @@ var DropDownSelect = React.createClass({
             <Option style={styles.dropdownOption}>Interestingness - Descending</Option>
             <Option style={styles.dropdownOption}>Relevance</Option>
           </Select>
-       
-
           <OptionList ref="OPTIONLIST"/>
       </View>
     )
