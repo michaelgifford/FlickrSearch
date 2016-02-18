@@ -21,6 +21,8 @@ var {
   StyleSheet,
 } = React;
 
+var sortType;
+
 
 var DropDownSelect = React.createClass({
   getInitialState: function(props) {
@@ -47,15 +49,19 @@ var DropDownSelect = React.createClass({
     });
   },
 
+  getSelectedState: function() {
+    return (this.state.canada);
+  },
+
   render: function() {
     return (
       <View style={styles.viewContainerDropDown}>
           <Select
           	style={styles.dropdownSelect}
-          	width={350}
+          	width={375}
             ref="SELECT1"
             optionListRef={this._getOptionList}
-            defaultValue="Sort Method"
+            defaultValue="Date Posted - Descending"
             onSelect={this._canada}>
             <Option style={styles.dropdownOption}>Date Posted - Ascending</Option>
             <Option style={styles.dropdownOption}>Date Posted - Descending</Option>
@@ -80,24 +86,20 @@ var styles = StyleSheet.create({
    	alignItems: 'center',
    	height: 260,
    	backgroundColor: 'rgba(0, 0, 0, 0.0)',
-	//transform: [{'translate':[0,0,1]}],
-
+    marginBottom: -180,
+    top: -587,
   },
   dropdownSelect: {
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#ffffff',
     top: -105,
-	//transform: [{'translate':[0,0,1]}],
-
   },
   dropdownOption: {
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#ffffff',
-	//transform: [{'translate':[0,0,1]}], 
   },
-  
 });
 
 module.exports = DropDownSelect;

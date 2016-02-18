@@ -68,9 +68,33 @@ var SearchComponent = React.createClass({
   },
 
   queryURL: function(query: string, pageNum: number): string { //get the query url
+    var selectedSortType = this.refs.ddselect.getSelectedState();
+    selectedSortType = selectedSortType.toString();
+
     if (query) {
-      return (FLICKR_SEARCH_URL + '&api_key=' + FLICKR_API_KEY + '&text=' + encodeURIComponent(query) + '&page=' + pageNum);
+      if(selectedSortType == "Date Posted - Ascending"){
+        console.log("queryurl function" + "if 1");
+        return (FLICKR_SEARCH_URL + '&api_key=' + FLICKR_API_KEY + '&text=' + encodeURIComponent(query) + '&page=' + pageNum + '&sort=' + 'date-posted-asc');
+      } else if(selectedSortType == "Date Posted - Descending") {
+             console.log("queryurl function" + "if 2");
+        return (FLICKR_SEARCH_URL + '&api_key=' + FLICKR_API_KEY + '&text=' + encodeURIComponent(query) + '&page=' + pageNum + '&sort=' + 'date-posted-desc');
+      } else if(selectedSortType == "Date Taken - Ascending") {
+               console.log("queryurl function" + "if 3");
+        return (FLICKR_SEARCH_URL + '&api_key=' + FLICKR_API_KEY + '&text=' + encodeURIComponent(query) + '&page=' + pageNum + '&sort=' + 'date-taken-asc');
+      } else if(selectedSortType == "Interestingness - Ascending") {
+             console.log("queryurl function" + "if 4");
+        return (FLICKR_SEARCH_URL + '&api_key=' + FLICKR_API_KEY + '&text=' + encodeURIComponent(query) + '&page=' + pageNum + '&sort=' + 'date-taken-desc');
+      } else if(selectedSortType == "Interestingness - Descending") {
+             console.log("queryurl function" + "if 5");
+        return (FLICKR_SEARCH_URL + '&api_key=' + FLICKR_API_KEY + '&text=' + encodeURIComponent(query) + '&page=' + pageNum + '&sort=' + 'interestingness-desc');
+      } else if(selectedSortType == "Relevance") {
+               console.log("queryurl function" + "if 6");
+        return (FLICKR_SEARCH_URL + '&api_key=' + FLICKR_API_KEY + '&text=' + encodeURIComponent(query) + '&page=' + pageNum + '&sort=' + 'interestingness-asc');
+      } else {
+             console.log("queryurl function" + "if 7");
+        return (FLICKR_SEARCH_URL + '&api_key=' + FLICKR_API_KEY + '&text=' + encodeURIComponent(query) + '&page=' + pageNum);
     } 
+  }
   },
 
   getData: function(query: string) {
@@ -78,6 +102,7 @@ var SearchComponent = React.createClass({
     this.timeoutID = null;
     var cacheResults = resultsCache.queryData[query];
 
+/* // Cache commented out while working on dropdown sorting
     if (cacheResults) {
       if (!loadingState[query]) { // if results exist and loading state is negative
         this.setState({
@@ -89,6 +114,7 @@ var SearchComponent = React.createClass({
       }
       return;
     }
+    */
 
     loadingState[query] = true; // set loading state to true when no results exist for terms
     resultsCache.queryData[query] = null;
@@ -108,6 +134,7 @@ var SearchComponent = React.createClass({
         resultsCache.queryData[query] = responseData.photos.photo;
         resultsCache.queryNextPageNum[query] = 2;
         
+        console.log("inside fetch");
         if (this.state.filter !== query) { // if bad query don't update state
           return;
         }
@@ -132,7 +159,7 @@ var SearchComponent = React.createClass({
   alterSearch: function(event: Object){ // Text in search bar is changed, update query
     var filter = event.nativeEvent.text.toLowerCase();
     this.clearTimeout(this.timeoutID);
-    this.timeoutID = this.setTimeout(() => this.getData(filter), 50);
+    this.timeoutID = this.setTimeout(() => this.getData(filter), 120);
   },
 
   photoSelected: function(photo: Object) { // photo selected, call single photo view
@@ -184,19 +211,20 @@ var SearchComponent = React.createClass({
 
       <View style={styles.viewContainer}>
         <SearchBox
+        ref="searchbox"
           alterSearch={this.alterSearch}
           loadingNow={this.state.loadingNow}
           onFocus={() =>
             this.refs.listview && this.refs.listview.getScrollResponder().scrollTo({ x: 0, y: 0 })}/>
            
             <View style={styles.gridSeparator} />
-                                <DropDownSelect/>
+            {content}
+                
+                <DropDownSelect ref="ddselect"/>
 
 
         <View style={styles.gridSeparator} />
-        <View style={styles.photoGridContainer}>
-        {content}
-        </View>
+ 
       </View>
     );
   },
@@ -226,7 +254,8 @@ var styles = StyleSheet.create({
   viewContainer: {
     flex: 1,
     backgroundColor: 'white',
-    height: 300,
+    //height: 500,
+    marginBottom: -100,
   },
   listContainer: {
     flexDirection: 'row',
@@ -245,10 +274,6 @@ var styles = StyleSheet.create({
   gridSeparator: {
     height: 1,
     backgroundColor: '#ffffff',
-  },
-  photoGridContainer: {
-    top: -100,
-    backgroundColor: 'rgba(0, 0, 0, 0.0)',
   },
 });
 

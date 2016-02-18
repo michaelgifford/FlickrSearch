@@ -43,6 +43,7 @@ var styles = StyleSheet.create({
     marginTop: 64,
     paddingLeft: 8,
     padding: 3,
+    marginBottom: 50,
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#0862b8',
