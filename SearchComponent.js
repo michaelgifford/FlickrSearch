@@ -16,6 +16,8 @@ var {
   AlertIOS,
   TouchableHighlight,
   Picker,
+  Select,
+
 } = React;
 
 //var invariant = require('invariant');
@@ -25,6 +27,8 @@ var dismissKeyboard = require('dismissKeyboard');
 var GridCell = require('./GridCell');
 var PhotoView = require('./PhotoView');
 var SearchBox = require('./SearchBox');
+
+var DropDownSelect = require('./DropDownSelect');
 
 // API Constants
 const FLICKR_API_KEY = '161c811dea5fcf85b2467b027fef9775'; 
@@ -42,6 +46,9 @@ var resultsCache = {
 var SearchComponent = React.createClass({
   mixins: [TimerMixin],
   timeoutID: (null: any),
+
+
+
 
   getInitialState: function() { // get state of app
     return {
@@ -181,21 +188,15 @@ var SearchComponent = React.createClass({
           loadingNow={this.state.loadingNow}
           onFocus={() =>
             this.refs.listview && this.refs.listview.getScrollResponder().scrollTo({ x: 0, y: 0 })}/>
-    
-            <Picker style={styles.sortPicker}
-              selectedValue={this.state.sortType}
-              onValueChange={(sort) => this.setState({sortType: sort})}>
-              <Picker.Item label="Date Posted - Ascending" value="date-posted-asc" />
-              <Picker.Item label="Date Posted - Descending" value="date-posted-desc" />
-              <Picker.Item label="Date Taken - Asceding" value="date-taken-asc" />
-              <Picker.Item label="Date Taken - Descending" value="date-taken-desc" />
-              <Picker.Item label="Interestingness- Descending" value="interestingness-desc" />
-              <Picker.Item label="Interestingness- Ascending" value="interestingness-asc" />
-              <Picker.Item label="Relevance" value="relevance" />
-            </Picker>
+           
+            <View style={styles.gridSeparator} />
+                                <DropDownSelect/>
+
 
         <View style={styles.gridSeparator} />
+        <View style={styles.photoGridContainer}>
         {content}
+        </View>
       </View>
     );
   },
@@ -245,11 +246,9 @@ var styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#ffffff',
   },
-  sortPicker: {
-    marginTop: -20,
-    marginBottom: 50,
-    height: 150,
-    top: 0,
+  photoGridContainer: {
+    top: -100,
+    backgroundColor: 'rgba(0, 0, 0, 0.0)',
   },
 });
 
